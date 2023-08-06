@@ -41,39 +41,23 @@
 //     console.error('Error:', error);
 //   });
 
-document.addEventListener('DOMContentLoaded', () => {
-  const categoryListElement = document.getElementById('categoryList');
+document.addEventListener('DOMContentLoaded', async function() {
+  const categoriesList = document.getElementById('categoryList');
 
-  function fetchCategories() {
-    return fetch('https://books-backend.p.goit.global/books/category-list')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Очищуємо попередні дані, якщо такі є
-        categoryListElement.innerHTML = '';
+  try {
+      const response = await fetch('https://books-backend.p.goit.global/books/category-list');
+      const data = await response.json();
 
-        // Додаємо кожну категорію до списку
-        data.forEach((category) => {
+      data.forEach(category => {
           const listItem = document.createElement('li');
-          listItem.classList.add('categories-item');
-
           const link = document.createElement('a');
-          link.href = `/category/${category.id}`; // Встановіть унікальний шлях до категорії
-          link.textContent = category.list_name;
+          link.href = `https://books-backend.p.goit.global/books/category?category=${category.list_name}`;
           link.classList.add('categories-text', 'link');
-
+          link.textContent = category.list_name;
           listItem.appendChild(link);
-          categoryListElement.appendChild(listItem);
-        });
-      })
-      .catch((error) => {
-        console.error('Error fetching categories:', error);
+          categoriesList.appendChild(listItem);
       });
+  } catch (error) {
+      console.error('Error fetching data:', error);
   }
-
-  fetchCategories();
 });
