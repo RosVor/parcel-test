@@ -1,0 +1,2 @@
+document.addEventListener("DOMContentLoaded",(async function(){const t=document.getElementById("categoryList");try{const e=await fetch("https://books-backend.p.goit.global/books/category-list");(await e.json()).forEach((e=>{const o=document.createElement("li"),a=document.createElement("a");a.href=`https://books-backend.p.goit.global/books/category?category=${e.list_name}`,a.classList.add("categories-text","link"),a.textContent=e.list_name,o.appendChild(a),t.appendChild(o)}))}catch(t){console.error("Error fetching data:",t)}}));
+//# sourceMappingURL=index.07fdb565.js.map
