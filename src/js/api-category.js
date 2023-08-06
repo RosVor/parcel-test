@@ -1,63 +1,51 @@
-// // URL для запиту
-// const apiUrl = 'https://books-backend.p.goit.global/books/category-list';
+// document.addEventListener('DOMContentLoaded', async function() {
+//   const categoriesList = document.getElementById('categoryList');
 
-// // Опції запиту (якщо потрібно)
-// const options = {
-//   method: 'GET',
-//   headers: {
-//     'accept': 'application/json'
+//   try {
+//       const response = await fetch('https://books-backend.p.goit.global/books/category-list');
+//       const data = await response.json();
+
+//       data.forEach(category => {
+//           const listItem = document.createElement('li');
+//           const link = document.createElement('a');
+//           link.href = `https://books-backend.p.goit.global/books/category?category=${category.list_name}`;
+//           link.classList.add('categories-text', 'link');
+//           link.textContent = category.list_name;
+//           listItem.appendChild(link);
+//           categoriesList.appendChild(listItem);
+//       });
+//   } catch (error) {
+//       console.error('Error fetching data:', error);
 //   }
-// };
-
-// // Отримати список категорій
-// export function getCategories() {
-//   return fetch(apiUrl, options)
-//     .then(response => {
-//       if (!response.ok) {
-//         throw new Error(response.statusText);
-//       }
-//       return response.json();
-//     });
-// }
-
-// function createCategoriesList(categories) {
-//     const categoriesList = document.querySelector('.categories-list');
-  
-//     categories.forEach(category => {
-//       const listItem = document.createElement('li');
-//       const link = document.createElement('a');
-//       link.href = category.link;
-//       link.textContent = category.name;
-//       listItem.appendChild(link);
-//       categoriesList.appendChild(listItem);
-//     });
-//   }
-
-// getCategories()
-//   .then(data => {
-//     console.log(data); 
-//   })
-//   .catch(error => {
-//     console.error('Error:', error);
-//   });
-
-document.addEventListener('DOMContentLoaded', async function() {
+// });
+document.addEventListener('DOMContentLoaded', function() {
   const categoriesList = document.getElementById('categoryList');
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://books-backend.p.goit.global/books/category-list', true);
 
-  try {
-      const response = await fetch('https://books-backend.p.goit.global/books/category-list');
-      const data = await response.json();
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      const data = JSON.parse(xhr.responseText);
 
       data.forEach(category => {
-          const listItem = document.createElement('li');
-          const link = document.createElement('a');
-          link.href = `https://books-backend.p.goit.global/books/category?category=${category.list_name}`;
-          link.classList.add('categories-item', 'link');
-          link.textContent = category.list_name;
-          listItem.appendChild(link);
-          categoriesList.appendChild(listItem);
+        const listItem = document.createElement('li');
+        listItem.classList.add('categories-item'); // Додано клас 'categories-item'
+        
+        const link = document.createElement('a');
+        link.href = `https://books-backend.p.goit.global/books/category?category=${category.list_name}`;
+        link.classList.add('categories-text', 'link');
+        link.textContent = category.list_name;
+        listItem.appendChild(link);
+        categoriesList.appendChild(listItem);
       });
-  } catch (error) {
-      console.error('Error fetching data:', error);
-  }
+    } else {
+      console.error('Request failed with status:', xhr.status);
+    }
+  };
+
+  xhr.onerror = function() {
+    console.error('Request failed.');
+  };
+
+  xhr.send();
 });
