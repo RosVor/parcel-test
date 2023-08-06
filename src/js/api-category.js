@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           const listItem = document.createElement('li');
           const link = document.createElement('a');
           link.href = `https://books-backend.p.goit.global/books/category?category=${category.list_name}`;
-          link.classList.add('categories-text', 'link');
+          link.classList.add('categories-item', 'link');
           link.textContent = category.list_name;
           listItem.appendChild(link);
           categoriesList.appendChild(listItem);
